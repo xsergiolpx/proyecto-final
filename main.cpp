@@ -13,7 +13,8 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	//Pasos de tiempo
-	int t=1000;
+	int t=10000;
+	double dt=0.00001;
 	//Tamaño del cubo, temperatura, masa.
 	double l=1, T=1, m=1.66e-27;
 	//Numero de particulas
@@ -23,13 +24,24 @@ int main(int argc, char **argv)
 	srand(time(NULL)); // semilla
 	double x[n], y[n], z[n], vx[n], vy[n], vz[n], rr[n];
 
+	//Se resetean las posiciones a cero
+	for(int i=0; i<n; i++) {
+		x[i]=0.5;
+		y[i]=0.5;
+		z[i]=0.5;
+		vx[i]=1000;
+		vy[i]=1000;
+		vz[i]=1000;
+		rr[i]=0;
+	}
+	
 	//Variable radial de cada caminante
 	for(int i=0; i<n; i++) {
-		rr[i]=sqrt(vx[i]*vx[i]+vy[i]*vy[i]+vz[i]*vz[i]);
+		rr[i]=dt*sqrt(vx[i]*vx[i]+vy[i]*vy[i]+vz[i]*vz[i]);
 	}
 
 	for(int i=0; i<t; i++) {
-		for(int i=0; i<n-1; i++) {
+		for(int i=0; i<n; i++) {
 			//Se sacan dos angulos aleatorios
 			teta=minimo+abs((double)rand()/(RAND_MAX+1.0))*(maximo-minimo);
 			phi=minimo+abs((double)rand()/(RAND_MAX+1.0))*(maximo-minimo);
@@ -42,5 +54,14 @@ int main(int argc, char **argv)
 			}
 		}
 	}
+
+
+//Sacar la posicion de las particulas, la primera columna es x, la segunda y
+	ofstream salida ("posiciones.txt", ios::out);
+	for (int i = 0; i < n; i++) {
+		salida << x[i] << " " << y[i] << endl;
+		cout << x[i]<< " " << y[i] << endl;
+	}
+	salida.close();
 	return 0;
 }
