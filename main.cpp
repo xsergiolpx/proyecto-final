@@ -6,7 +6,10 @@
 #include <vector>
 #include <iomanip>
 #include <fstream>
+#include <climits>
 #include "fuera.h"
+#include "inicio.h"
+
 
 using namespace std;
 
@@ -14,11 +17,12 @@ int main(int argc, char **argv)
 {
 	//Pasos de tiempo
 	int t=10000;
+	//Diferencial de tiempo
 	double dt=0.00001;
 	//Tamaño del cubo, temperatura, masa.
-	double l=1, T=1, m=1.66e-27;
+	double l=0.1, T=273, m=1.66e-27;
 	//Numero de particulas
-	int n=20;
+	int n=2500;
 	//Variables de las coordenadas esfericas de los caminantes
 	double teta, phi, minimo=0, maximo=2*3.14159265;
 	srand(time(NULL)); // semilla
@@ -26,15 +30,15 @@ int main(int argc, char **argv)
 
 	//Se resetean las posiciones a cero
 	for(int i=0; i<n; i++) {
-		x[i]=0.5;
-		y[i]=0.5;
-		z[i]=0.5;
-		vx[i]=1000;
-		vy[i]=1000;
-		vz[i]=1000;
+		x[i]=0;
+		y[i]=0;
+		z[i]=0;
+		vx[i]=0;
+		vy[i]=0;
+		vz[i]=0;
 		rr[i]=0;
 	}
-	
+	inicio(n,l,T,m,x,y,z,vx,vy,vz);
 	//Variable radial de cada caminante
 	for(int i=0; i<n; i++) {
 		rr[i]=dt*sqrt(vx[i]*vx[i]+vy[i]*vy[i]+vz[i]*vz[i]);
@@ -59,8 +63,8 @@ int main(int argc, char **argv)
 //Sacar la posicion de las particulas, la primera columna es x, la segunda y
 	ofstream salida ("posiciones.txt", ios::out);
 	for (int i = 0; i < n; i++) {
-		salida << x[i] << " " << y[i] << endl;
-		cout << x[i]<< " " << y[i] << endl;
+		salida << x[i] << " " << y[i] << " " << z[i]  << endl;
+		cout << x[i]<< " " << y[i] << " " << z[i]  << endl;
 	}
 	salida.close();
 	return 0;
