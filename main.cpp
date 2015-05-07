@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
 //Salida final por pantalla
 	cout << "\n\n              ####   RESULTADOS   ####\n";
-	cout << "\n\nNumero de atomos de gas:             " << n;
+	cout << "\n\nNumero de atomos de gas:                " << n;
 	cout << "\n\nTiempo total de interaccion:            " << t*dt << "  s";
 	cout << "\n\nMomento total sobre las paredes:        " << momento  << "  kg m/s\n\n";
 //cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
