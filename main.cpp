@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	//Tamaño del cubo, temperatura, masa.
 	double l = 0.1, T = 273, m = 1.66e-27, momento = 0;
 	//Numero de particulas
-	int n = 2500;
+	int n = 250;
 	//Variables de las coordenadas esfericas de los caminantes
 	double teta, phi, minimo = 0, maximo = 2 * 3.14159265;
 	srand(time(NULL)); // semilla
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 			}
 		}
 		//Barra de progreso
-		loadbar(j, t, 50);
+		loadbar(j + 1, t, 50);
 	}
 
 
@@ -74,9 +74,14 @@ int main(int argc, char **argv)
 	ofstream salida ("posiciones.txt", ios::out);
 	for (int i = 0; i < n; i++) {
 		salida << x[i] << " " << y[i] << " " << z[i]  << endl;
-		cout << x[i] << " " << y[i] << " " << z[i]  << endl;
 	}
 	salida.close();
-	cout << "\n\nEl momento total de las paredes es:     " << momento  << "  kg m/s" << endl;
+
+	//Salida final por pantalla
+	cout << "\n\n              ####   RESULTADOS   ####\n";
+	cout << "\n\nNumero de moleculas de gas:             " << n;
+	cout << "\n\nTiempo total de interaccion:            " << t*dt << "  s";
+	cout << "\n\nMomento total sobre las paredes:        " << momento  << "  kg m/s\n\n";
+	cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
 	return 0;
 }
