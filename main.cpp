@@ -7,17 +7,16 @@
 #include <iomanip>
 #include <fstream>
 #include <climits>
-
 #include "fuera.h"
 #include "inicio.h"
 #include "incrementoMomento.h"
 #include "progreso.h"
 
-
 using namespace std;
 
 int main(int argc, char **argv)
 {
+
 	//Pasos de tiempo
 	int t = 10000;
 	//Diferencial de tiempo
@@ -25,13 +24,15 @@ int main(int argc, char **argv)
 	//Tamaño del cubo, temperatura, masa.
 	double l = 0.1, T = 273, m = 1.66e-27, momento = 0;
 	//Numero de particulas
-	int n = 15000;
+	int n = 2000;
 	//Variables de las coordenadas esfericas de los caminantes
 	double teta, phi, minimo = 0, maximo = 2 * 3.14159265;
 	srand(time(NULL)); // semilla
+
 	double x[n], y[n], z[n], vx[n], vy[n], vz[n], rr[n];
 
-	//Se resetean las posiciones a cero
+
+//Se resetean las posiciones a cero
 	for(int i = 0; i < n; i++) {
 		x[i] = 0;
 		y[i] = 0;
@@ -41,12 +42,12 @@ int main(int argc, char **argv)
 		vz[i] = 0;
 		rr[i] = 0;
 	}
-	//Disposicion inicial de las partículas, y distribucion de las velocidades
-	cout << "Calculando las posiciones y distribuciones de la velocidad iniciales\n\n";
+//Disposicion inicial de las partículas, y distribucion de las velocidades
+	cout << "Calculando las posiciones y distribuciones de la velocidad iniciales...    ";
 	inicio(n, l, T, m, x, y, z, vx, vy, vz);
-	cout << "Hecho\n\n";
+	cout << "[Hecho]\n\n";
 
-	cout << "Calculando los movimientos de los atómos y la presión de la pared para " << t*dt << " segundos\n\n";
+	cout << "Calculando los movimientos de los atomos y la presión sobre la pared para " << t*dt << " segundos\n\n";
 	for(int j = 0; j < t; j++) {
 		for(int i = 0; i < n; i++) {
 			//Se sacan dos angulos aleatorios
@@ -70,6 +71,7 @@ int main(int argc, char **argv)
 	}
 
 
+
 //Sacar la posicion de las particulas, la primera columna es x, la segunda y
 	ofstream salida ("posiciones.txt", ios::out);
 	for (int i = 0; i < n; i++) {
@@ -77,11 +79,11 @@ int main(int argc, char **argv)
 	}
 	salida.close();
 
-	//Salida final por pantalla
+//Salida final por pantalla
 	cout << "\n\n              ####   RESULTADOS   ####\n";
-	cout << "\n\nNumero de moleculas de gas:             " << n;
+	cout << "\n\nNumero de atomos de gas:             " << n;
 	cout << "\n\nTiempo total de interaccion:            " << t*dt << "  s";
 	cout << "\n\nMomento total sobre las paredes:        " << momento  << "  kg m/s\n\n";
-	//cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
+//cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
 	return 0;
 }
