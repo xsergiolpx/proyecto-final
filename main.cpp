@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	//Tamaño del cubo, temperatura, masa.
 	double l = 0.1, T = 273, m = 1.66e-27, momento = 0;
 	//Numero de particulas
-	int n = 250;
+	int n = 15000;
 	//Variables de las coordenadas esfericas de los caminantes
 	double teta, phi, minimo = 0, maximo = 2 * 3.14159265;
 	srand(time(NULL)); // semilla
@@ -82,6 +82,6 @@ int main(int argc, char **argv)
 	cout << "\n\nNumero de moleculas de gas:             " << n;
 	cout << "\n\nTiempo total de interaccion:            " << t*dt << "  s";
 	cout << "\n\nMomento total sobre las paredes:        " << momento  << "  kg m/s\n\n";
-	cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
+	//cout <<     "Trabajo del gas:                        " << momento / dt << "   J\n\n";
 	return 0;
 }
