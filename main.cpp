@@ -7,9 +7,11 @@
 #include <iomanip>
 #include <fstream>
 #include <climits>
+
 #include "fuera.h"
 #include "inicio.h"
 #include "incrementoMomento.h"
+#include "progreso.h"
 
 
 using namespace std;
@@ -17,52 +19,54 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	//Pasos de tiempo
-	int t=10000;
+	int t = 10000;
 	//Diferencial de tiempo
-	double dt=0.00001;
+	double dt = 0.00001;
 	//Tamaño del cubo, temperatura, masa.
-	double l=0.1, T=273, m=1.66e-27, momento=0;
+	double l = 0.1, T = 273, m = 1.66e-27, momento = 0;
 	//Numero de particulas
-	int n=25;
+	int n = 2500;
 	//Variables de las coordenadas esfericas de los caminantes
-	double teta, phi, minimo=0, maximo=2*3.14159265;
+	double teta, phi, minimo = 0, maximo = 2 * 3.14159265;
 	srand(time(NULL)); // semilla
 	double x[n], y[n], z[n], vx[n], vy[n], vz[n], rr[n];
 
 	//Se resetean las posiciones a cero
-	for(int i=0; i<n; i++) {
-		x[i]=0;
-		y[i]=0;
-		z[i]=0;
-		vx[i]=0;
-		vy[i]=0;
-		vz[i]=0;
-		rr[i]=0;
+	for(int i = 0; i < n; i++) {
+		x[i] = 0;
+		y[i] = 0;
+		z[i] = 0;
+		vx[i] = 0;
+		vy[i] = 0;
+		vz[i] = 0;
+		rr[i] = 0;
 	}
-	inicio(n,l,T,m,x,y,z,vx,vy,vz);
-	//Variable radial de cada caminante
-	for(int i=0; i<n; i++) {
-		//rr[i]=dt*sqrt(vx[i]*vx[i]+vy[i]*vy[i]+vz[i]*vz[i]);
-	}
+	//Disposicion inicial de las partículas, y distribucion de las velocidades
+	cout << "Calculando las posiciones y distribuciones de la velocidad iniciales\n\n";
+	inicio(n, l, T, m, x, y, z, vx, vy, vz);
+	cout << "Hecho\n\n";
 
-	for(int j=0; j<t; j++) {
-		for(int i=0; i<n; i++) {
+	cout << "Calculando los movimientos de los atómos y la presión de la pared para " << t*dt << " segundos\n\n";
+	for(int j = 0; j < t; j++) {
+		for(int i = 0; i < n; i++) {
 			//Se sacan dos angulos aleatorios
-			teta=minimo+abs((double)rand()/(RAND_MAX+1.0))*(maximo-minimo);
-			phi=minimo+abs((double)rand()/(RAND_MAX+1.0))*(maximo-minimo);
+			teta = minimo + abs((double)rand() / (RAND_MAX + 1.0)) * (maximo - minimo);
+			phi = minimo + abs((double)rand() / (RAND_MAX + 1.0)) * (maximo - minimo);
 			//Se calcula el modulo del radio del movimiento de cada particula como |v|*dt
-			rr[i]=dt*sqrt(vx[i]*vx[i]+vy[i]*vy[i]+vz[i]*vz[i]);
+			rr[i] = dt * sqrt(vx[i] * vx[i] + vy[i] * vy[i] + vz[i] * vz[i]);
 			//Calculamos la posicion en cartesianas
-			if(fuera(x[i],y[i],z[i],rr[i],teta,phi,l)==false) {
+			if(fuera(x[i], y[i], z[i], rr[i], teta, phi, l) == false) {
 				//Si no se sale, se mueve la particula
-				x[i]=x[i]+rr[i]*sin(teta)*cos(phi);
-				y[i]=y[i]+rr[i]*sin(teta)*sin(phi);
-				z[i]=z[i]+rr[i]*cos(teta);
-			}
-			else{
-				incrementoMomento(vx[i],vy[i],vz[i],momento);
+				x[i] = x[i] + rr[i] * sin(teta) * cos(phi);
+				y[i] = y[i] + rr[i] * sin(teta) * sin(phi);
+				z[i] = z[i] + rr[i] * cos(teta);
+			} else {
+				//Si se sale, se calcula el momento que le transpasa a la pared
+				momento = incrementoMomento(x[i], y[i], z[i], vx[i], vy[i], vz[i], momento, rr[i], teta, phi, l, m);
 			}
 		}
+		//Barra de progreso
+		loadbar(j, t, 50);
 	}
 
 
@@ -70,8 +74,9 @@ int main(int argc, char **argv)
 	ofstream salida ("posiciones.txt", ios::out);
 	for (int i = 0; i < n; i++) {
 		salida << x[i] << " " << y[i] << " " << z[i]  << endl;
-		cout << x[i]<< " " << y[i] << " " << z[i]  << endl;
+		cout << x[i] << " " << y[i] << " " << z[i]  << endl;
 	}
 	salida.close();
+	cout << "\n\nEl momento total de las paredes es:     " << momento  << "  kg m/s" << endl;
 	return 0;
 }
