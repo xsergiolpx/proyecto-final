@@ -1,3 +1,5 @@
+//Este main no incluye interacciones entre particulas
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
