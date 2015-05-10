@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	for(int j = 0; j < t; j++) {
 		for(int i = 0; i < n; i++) {
 			//Se sacan dos angulos aleatorios
-			teta = minimo + abs((double)rand() / (RAND_MAX + 1.0)) * (maximo - minimo);
+			teta = minimo + abs((double)rand() / (RAND_MAX + 1.0)) * (maximo/2.0 - minimo);
 			phi = minimo + abs((double)rand() / (RAND_MAX + 1.0)) * (maximo - minimo);
 			//Se calcula el modulo del radio del movimiento de cada particula como |v|*dt
 			rr[i] = dt * sqrt(vx[i] * vx[i] + vy[i] * vy[i] + vz[i] * vz[i]);
