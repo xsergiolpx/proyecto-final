@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	 */
 
 	//Pasos de tiempo
-	int t = 10;
+	int t = 100;
 	//Diferencial de tiempo
 	double dt = 1e-13;
 	//Tamaño del cubo, temperatura, masa.
@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 
 //Salida final por pantalla
 	cout << "\n\n              ####   RESULTADOS   ####\n";
-	cout << "\nLado del cubo:                          " << l;
-	cout << "\n\nRadio del atomo:                        " << radioHe;
+	cout << "\nLado del cubo:                          " << l << "  m";
+	cout << "\n\nRadio del atomo:                        " << radioHe << "  m";
 	cout << "\n\nPasos de todos los atomos               " << pasos;
 	cout << "\n\nNumero de atomos de gas:                " << n;
 	cout << "\n\nTiempo total de simulacion:            " << t*dt << "  s";
@@ -156,7 +156,6 @@ int main(int argc, char **argv)
 	cout << "\nLibre recorrido medio:                  " << lMed << "  m";
 	cout << "\n\nPresion con PV=nRT:                     " << moles*R*T / (l * l * l) << "  Pa";
 	cout << "\n\nPresion numerica:                       " << (momento / (l * l * 6)) / (t * dt) << "  Pa";
-	//cout << "\n\nTrabajo del gas:                        " << momento / dt << "   J\n\n";
 	cout << "\n\n";
 	return 0;
 }
