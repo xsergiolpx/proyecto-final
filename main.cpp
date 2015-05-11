@@ -22,22 +22,22 @@ int main(int argc, char **argv)
 
 	//Tener en cuenta las colisiones?
 	bool colisiones = false;
-	
+
 	/*
 	 * Parametros modificables
 	 */
 
 	//Pasos de tiempo
-	int t = 1000;
+	int t = 15000;
 	//Diferencial de tiempo
-	double dt = 1e-13;
+	double dt = 0.00002;
 	//Tamaño del cubo, temperatura, masa.
-	double lext = 1e-8, lin = lext / 2.0;;
-	double  Text = 1, Tin = 30, m = 222.0 * 1.660538e-27, momento = 0;
+	double lext = 1, lin = lext / 2.0;;
+	double  Text = 1, Tin = 30, m = 1.660538e-27, momento = 0;
 	//Numero de particulas
-	int n = 4000;
+	int n = 8000;
 	//Radio del atomo
-	double radioH = 120e-12;
+	double radioH = 25e-12;
 	//Diferencial de camino para mover la particula y comprobar si se choca con otra
 	double dr = radioH;
 
@@ -197,6 +197,6 @@ int main(int argc, char **argv)
 	}
 	cout << "\n\nPresion numerica:                       " << (momento / (l * l * 6.0)) / (t * dt) << "  Pa";
 	cout << "\n\n";
-	
+
 	return 0;
 }
