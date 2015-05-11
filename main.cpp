@@ -196,7 +196,15 @@ int main(int argc, char **argv)
 		cout << "\nLibre recorrido medio:                  " << lMed << "  m";
 	}
 	cout << "\n\nPresion numerica:                       " << (momento / (l * l * 6.0)) / (t * dt) << "  Pa";
-	cout << "\n\n";
+	cout << "\n\n\nSe han guardado los siguientes archivos:\n\n";
+	cout << "		posiciones.txt       Contiene las posiciones cartesianas finales de las particulas\n";
+	cout << "		Datosexterior.txt    Contiene las las velocidades de las que se encuentran en el cubo externo\n";
+	cout << "		Datosinterior.txt    Contiene las las velocidades de las que se encuentran en el cubo interno\n";
+	if (colisiones == true) {
+		cout << "		colisiones.txt       Contiene las el libre recorrido de las particulas";
+	}
+	cout << "\n";
+
 
 	return 0;
 }
