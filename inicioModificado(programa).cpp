@@ -1,0 +1,166 @@
+# include<iostream>
+# include <cmath>
+# include <climits>
+# include <stdlib.h>
+# include <fstream>
+# include "inicio.h"
+
+using namespace std;
+
+void inicioModificado(int n, double lext, double lin, double Text, double Tin, double m, double* x, double* y, double* z, double* vx, double* vy, double* vz){ 
+
+// inicio: función que genera el estado inicial del gas en una caja cúbica
+
+// Entrada:
+
+// n: número de partículas en la caja (u entero al cubo)
+// l: lado de la caja
+// T: temperatura
+// m: masa molecular
+// x,y,z: punteros donde se guardaran las coordenadas de las partículas
+// vx,vy,vz: punteros para las componentes de las velocidades
+
+// Salida:
+// Es tipo void pero escribe sobre los punteros x,y,z
+
+  srand (time(NULL));
+  double Nm = INT_MAX;  // Máximo entero
+  double rango = lext;    // el rango
+  double liminf = 0;
+
+// ahora colocamos las partículas homogenenamente distribuidads en el cubo
+for(int i = 0; i < n; i++){
+x[i] = (double(rand())*rango)/Nm + liminf;
+y[i] = (double(rand())*rango)/Nm + liminf;
+z[i] = (double(rand())*rango)/Nm + liminf;
+} // fin del  for de distribución
+
+// ahora generamos la distribución inicial de velocidades con números aleatorios que se ajustan a la distribución de velocidades moleculares de Maxwell-Boltzmann
+
+  double K = 1.3806504e-23; // cte Boltzmann
+  double sigma = sqrt(K*Text/m); // desviación típica de la distribución
+  double sigma2 = sqrt(K*Tin/m);
+  rango = 5*sigma;    // el rango
+  double rango2 = 5*sigma2;
+  liminf = -2.5*sigma;
+  double liminf2 = -2.5*sigma2;
+// ahora se genenran los numeros aleatorios que se van aceptando o rechazando
+double Pteor; double Ptest; double vi; // probabilidades
+for(int i = 0; i < n; i++){
+ vx[i] = (double(rand())*rango)/Nm + liminf;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vx[i];
+Pteor = MB(vi,m,Text);  // probabilidad según la distribución
+if(x[i] > lext*0.5-lin){ // modificación para el cubo interior
+if(x[i] < lext*0.5+lin){
+if(y[i] > lext*0.5-lin){
+if(y[i] < lext*0.5+lin){
+if(z[i] > lext*0.5-lin){
+if(z[i] < lext*0.5+lin){
+ vx[i] = (double(rand())*rango2)/Nm + liminf2;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vx[i];
+Pteor = MB(vi,m,Tin);  // probabilidad según la distribución
+
+}}}}}}// fin sextuple if zona de modificación
+if(Ptest > Pteor){
+i = i-1; // se rechaza
+}
+}
+
+// ahora la componente y de la velocidad
+
+for(int i = 0; i < n; i++){
+ vy[i] = (double(rand())*rango)/Nm + liminf;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vy[i];
+Pteor = MB(vi,m,Text);  // probabilidad según la distribución
+if(x[i] > lext*0.5-lin){ // modificación para el cubo interior
+if(x[i] < lext*0.5+lin){
+if(y[i] > lext*0.5-lin){
+if(y[i] < lext*0.5+lin){
+if(z[i] > lext*0.5-lin){
+if(z[i] < lext*0.5+lin){
+ vx[i] = (double(rand())*rango2)/Nm + liminf2;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vx[i];
+Pteor = MB(vi,m,Tin);  // probabilidad según la distribución
+
+}}}}}}// fin sextuple if zona de modificación
+if(Ptest > Pteor){
+i = i-1; // se rechaza
+}
+}
+
+
+// ahora la componente z de la velocidad
+
+for(int i = 0; i < n; i++){
+ vz[i] = (double(rand())*rango)/Nm + liminf;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vz[i];
+Pteor = MB(vi,m,Text);  // probabilidad según la distribución
+if(x[i] > lext*0.5-lin){ // modificación para el cubo interior
+if(x[i] < lext*0.5+lin){
+if(y[i] > lext*0.5-lin){
+if(y[i] < lext*0.5+lin){
+if(z[i] > lext*0.5-lin){
+if(z[i] < lext*0.5+lin){
+ vx[i] = (double(rand())*rango2)/Nm + liminf2;
+Ptest = double(rand())/Nm;  // entre 0 y 1
+vi = vx[i];
+Pteor = MB(vi,m,Tin);  // probabilidad según la distribución
+
+}}}}}}// fin sextuple if zona de modificación
+if(Ptest > Pteor){
+i = i-1; // se rechaza
+}
+}
+
+
+}// fin de la función inicio
+
+int main(){
+ofstream F1("Datos-ext.txt");
+ofstream F2("Datos-int.txt");
+int n = 8000;
+double lext = 1;
+double lin = 0.5;
+lin = lin*0.5;
+double Text = 1;
+double Tin = 30;
+double m = 6.7e-27;
+double x[n]; double y[n]; double z[n]; double vx[n]; 
+double vy[n]; double vz[n];
+double v[n];
+inicioModificado(n,lext,lin,Text,Tin,m,x,y,z,vx,vy,vz);
+for(int i = 0; i < n; i++){
+v[i] = sqrt(vx[i]*vx[i] + vy[i]*vy[i] + vz[i]*vz[i]);
+if(x[i] > lext*0.5-lin){ // modificación para el cubo interior
+if(x[i] < lext*0.5+lin){
+if(y[i] > lext*0.5-lin){
+if(y[i] < lext*0.5+lin){
+if(z[i] > lext*0.5-lin){
+if(z[i] < lext*0.5+lin){
+F2<<v[i]<<endl;
+}}}}}}// fin sextuple if zona de modificación
+
+if(x[i] < lext*0.5-lin){ // modificación para el cubo interior
+F1<<v[i]<<endl;}
+else if(x[i] > lext*0.5+lin){
+F1<<v[i]<<endl;}
+else if(y[i] < lext*0.5-lin){
+F1<<v[i]<<endl;}
+else if(y[i] > lext*0.5+lin){
+F1<<v[i]<<endl;}
+else if(z[i] < lext*0.5-lin){
+F1<<v[i]<<endl;
+}
+else if(z[i] > lext*0.5+lin){
+F1<<v[i]<<endl;
+}
+// fin sextuple if zona de modificación
+
+}
+
+}
